@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import {Link} from 'react-router';
 import './Orders.css';
 const { Toolbar, Filters: { NumericFilter, AutoCompleteFilter }, Data: { Selectors } } = require('react-data-grid-addons');
-
+import moment from 'moment-es6'
 //TODO
 // (1)
 // Enable grouping
@@ -21,7 +21,9 @@ class StatusColorFormatter extends Component {
       'onhold': '#ffebcc',
       'completed': '#9fdf9f',
       'dispatched': '#9fdf9f',
-      'cancelled': '#ffb399'
+      'cancelled': '#ffb399',
+      'pending': 'darkorange',
+      'approved': 'lightgreen'
     }
   }
   render() {
@@ -35,7 +37,9 @@ class StatusColorFormatter extends Component {
   getStatusColor() {
     return {
       backgroundColor: this.colorMap[this.props.value],
-      textAlign: 'center'
+      textAlign: 'center',
+      padding: '4px',
+      textTransform: 'uppercase'
     };
   }
 }
@@ -56,6 +60,16 @@ class OrderLinkFormatter extends Component {
 }
 
 
+const DateFormatter = (p) => {
+  const m = moment(p.value, 'YYYY-MM-DD HH:mm:ssA');
+  return (
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      <p>{m.format('DD/MMM/YY - HH:mm:ssA')}<span style={{fontSize: '0.6em', color: 'darkgray'}}>({m.fromNow()})</span></p>
+    </div>
+  )
+}
+
+
 class Orders extends Component {
 
   constructor(props) {
@@ -70,7 +84,7 @@ class Orders extends Component {
     let _defaultRows = [];
     this._columns = [
       {
-        key: 'orderId',
+        key: 'id',
         name: 'ORDER ID',
         resizable: true,
         sortable: true,
@@ -80,32 +94,32 @@ class Orders extends Component {
         formatter: OrderLinkFormatter
       },
       {
-        key: 'time',
+        key: 'ts',
         name: 'DATE',
         resizable: true,
         sortable: true,
-        width: 200,
-        filterable:true
+        filterable:true,
+        formatter: DateFormatter
       },
       {
-        key: 'userName',
-        name: 'CUSTOMER NAME',
+        key: 'agent',
+        name: 'Agent NAME',
         resizable: true,
         sortable: true,
         filterable:true,
         minWidth: 200
       },
       {
-        key: 'area',
-        name: 'AREA',
+        key: 'partyName',
+        name: 'Party',
         resizable: true,
         sortable: true,
         minWidth: 200,
         filterable:true
       },
       {
-        key: 'city',
-        name: 'CITY',
+        key: 'area',
+        name: 'AREA',
         resizable: true,
         sortable: true,
         minWidth: 200,
@@ -173,32 +187,19 @@ class Orders extends Component {
     // });
 
     const that = this;
-    const ordersRef = this.data.dbRef.child('orders');
+    const ordersRef = this.data.dbRef.child('o');
     ordersRef.orderByChild('priority').limitToFirst(100).on('value', snapshot => {
       let tablerows = [];
       let orders = snapshot.val();
-      for(let key in orders){
-        let order = orders[key];
-        if(order.isSubAgentOrder === true) {
-          continue;
-        }
+      for(let orderId in orders){
+        const order = orders[orderId];
         let dateTime = new Date(Number(order.time));
         let formattedDate = dateTime.toLocaleDateString('en-IN') + ' ' + dateTime.toLocaleTimeString('en-IN');
 
-        tablerows.unshift( {
-          orderId: key,
-          userName: order.userName,
-          state:order.state,
-          district:order.district,
-          area:order.area,
-          city: order.city,
-          status:order.status,
-          time : formattedDate,
-          timestamp: order.time
-        })
+        tablerows.unshift({...order})
       }
       that.setState({
-         rows: tablerows.sort((a,b) => {return (a.timestamp < b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0);} )
+         rows: tablerows.sort((a,b) => {return (a.priority < b.priority) ? 1 : ((b.priority < a.priority) ? -1 : 0);} )
       })
     });
   }

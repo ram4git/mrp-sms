@@ -6,7 +6,11 @@ import OrderUpdate from './OrderUpdate';
 import classNames from 'classnames';
 import FaEyeClose from 'react-icons/lib/fa/eye-slash';
 import FaEyeOpen from 'react-icons/lib/fa/eye';
+import moment from 'moment-es6';
 import { Button, Modal, Header, Image, Divider, Table, Loader } from 'semantic-ui-react';
+import {camelCaseToRegularCase} from './utils/helper';
+
+
 const LOADING = 'loading';
 const ERROR = 'error';
 
@@ -35,7 +39,7 @@ class Order extends Component {
   close = () => this.setState({ open: false })
 
   componentDidMount() {
-    const orderPath = `orders/${this.props.params.orderId}`;
+    const orderPath = `o/${this.props.params.orderId}`;
     const orderRef = firebase.database().ref().child(orderPath);
     orderRef.on('value', snap => {
       const orderData = snap.val();
@@ -90,49 +94,61 @@ class Order extends Component {
 
   renderSpecialMsg(msg) {
     return (
-      <div className="splMsg">
-        <p>{ msg }</p>
+      <div className="p-4 bg-yellow-400 rounded-lg my-4 shadow-lg">
+        <h1 className='font-bold text-2xl text-blue-900 text-center'>Agent's Message</h1>
+        <p className='text-2xl text-blue-600 text-center'>{ msg }</p>
       </div>
     );
   }
 
-  renderCart(cart) {
-    const { discount_amount, totalPrice, grossPrice, shopDetail, selectedLorrySize, totalWeight } = cart;
-    const shops = [];
-    shopDetail.forEach( shop => {
-      shops.push(this.renderShop(shop));
-    })
+  renderCart() {
+    const {          area,
+      product,
+      lPrice,
+      agentPrice,
+      party,
+      quantityInTons,
+      noOfBags,
+      total,
+      partyDetails} = this.state.orderData;
 
-    const totalPriceFixed = (+totalPrice).toFixed(2);
-    const totalDiscount = (+discount_amount).toFixed(2);
-    const totalWeightInTons = (+totalWeight)/10;
-    let weightStatusColor = '#40bf80';
-    if(totalWeightInTons > (+selectedLorrySize)) {
-      weightStatusColor = '#ff3333';
-    }
+
 
 
     return (
       <div className="cart" style={{textAlign: 'center'}}>
-        { shops }
-        <div className="summary">
+        <div className="summary w-full my-4 rounded-lg shadow-lg">
           <Divider />
           <table className="summary">
-            <tr>
-              <td className="key"><h3>Total Price<span>:</span></h3></td>
-              <td className="value"><strong>₹{parseFloat(totalPriceFixed).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Product<span>:</span></h3></td>
+              <td className="value text-align-start capitalize"><strong>{camelCaseToRegularCase(product)}</strong></td>
             </tr>
-            <tr>
-              <td className="key"><h3>Total Discount<span>:</span></h3></td>
-              <td className="value"><strong>₹{parseFloat(totalDiscount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Area<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{camelCaseToRegularCase(area)}</strong></td>
             </tr>
-            <tr>
-              <td className="key"><h3>Total Order Weight<span>:</span></h3></td>
-              <td className="value"><strong>{totalWeightInTons}</strong> tons </td>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Total Order Weight<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{quantityInTons}</strong> tons </td>
             </tr>
-            <tr>
-              <td className="key"><h3>Vehicle Capacity<span>:</span></h3></td>
-              <td className="value"><strong style={{color: weightStatusColor}}>{selectedLorrySize}</strong> tons</td>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>No of bags<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{noOfBags}</strong> </td>
+            </tr>
+
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Agent Price<span>:</span></h3></td>
+              <td className="value text-green-600"><strong>₹{parseFloat(agentPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Lalitha's Price<span>:</span></h3></td>
+              <td className="value text-green-600"><strong>₹{parseFloat(lPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+            <tr className='h-2 bg-gray-50'></tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Total Price<span>:</span></h3></td>
+              <td className="value text-green-600 font-bold"><strong>₹{parseFloat(total).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
             </tr>
           </table>
           <Divider />
@@ -149,7 +165,7 @@ class Order extends Component {
       return <Loader />
     }
 
-    const { status, time, userName} = this.state.orderData;
+    const { status, ts, agent} = this.state.orderData;
     if(this.state.orderData.loading === ERROR) {
       return (
         <div>
@@ -167,11 +183,12 @@ class Order extends Component {
 
       <h4>Order does not exist</h4>
     }
-    const date = new Date(time);
+    const timeString = moment(ts, 'YYYY-MM-DD HH:mm:ssA').format('DD/MMM/YY - HH:mm:ssA');
     const orderStatusColor = statusColorMap[status];
     const orderId = this.props.params.orderId;
 
-    const timeString  =  date.toDateString() + ' - ' + date.toLocaleTimeString();
+    const {area, partyName , partyDetails} = this.state.orderData;
+
 
     return (
 
@@ -190,11 +207,13 @@ class Order extends Component {
                 <Button labelPosition='right' icon='right chevron' content='Next Order' />
               </Button.Group>
             </div>
-            <ul className="header" style={{backgroundColor: orderStatusColor, textAlign: 'center', listStyle: 'none' }}>
-              <li><h2>{orderId}</h2></li>
-              <li><h2>User type = {this.state.isAgent ? 'AGENT' : 'OUTLET'}</h2></li>
-              <li><strong>{userName}</strong> ordered on <strong>{ timeString}</strong></li>
-              <li>Order is <strong>{status}</strong></li>
+            <ul className="header rounded-lg shadow-lg" style={{backgroundColor: orderStatusColor, textAlign: 'center', listStyle: 'none' }}>
+              <li className='py-1'><h2 className='py-2'>{orderId}</h2></li>
+              <li className='py-1'><strong>{agent}</strong> placed a purchase order on <strong>{ timeString}</strong></li>
+              <li className='py-1'>area:<strong>{camelCaseToRegularCase(area)}</strong></li>
+              <li className='py-1'>party:<strong>{partyName}</strong></li>
+              <li className='py-1'><p>{partyDetails}</p></li>
+              <li className='py-4'>Order is <strong className='text-3xl'>{status}</strong></li>
             </ul>
             { this.renderCart(this.state.orderData.cart) }
             { this.renderSpecialMsg(this.state.orderData.orderMsg) }
