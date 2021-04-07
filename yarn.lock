@@ -8841,7 +8841,12 @@ npm-run-path@^2.0.0, npm-run-path@^2.0.2:
   dependencies:
     path-key "^2.0.0"
 
-npm-user-validate@^0.1.5, npm-user-validate@~0.1.5:
+npm-user-validate@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-1.0.1.tgz#31428fc5475fe8416023f178c0ab47935ad8c561"
+  integrity sha512-uQwcd/tY+h1jnEaze6cdX/LrhWhoBxfSknxentoqmIuStxUExxjWd3ULMLFPiFUrZKbOVMowH6Jq2FRWfmhcEw==
+
+npm-user-validate@~0.1.5:
   version "0.1.5"
   resolved "https://registry.npmjs.org/npm-user-validate/-/npm-user-validate-0.1.5.tgz"
   integrity sha1-UkZdUMLSApSlcSW5lrrtv1bFAEs=
