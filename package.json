@@ -147,7 +147,7 @@
     "balanced-match": "^0.4.2",
     "base62": "^1.2.7",
     "base64-js": "^1.2.3",
-    "base64url": "^2.0.0",
+    "base64url": "^3.0.0",
     "batch": "^0.6.1",
     "bcrypt-pbkdf": "^1.0.1",
     "big.js": "^3.2.0",
