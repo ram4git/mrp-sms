@@ -60,7 +60,7 @@
     "async": "^1.5.2",
     "async-each": "^1.0.1",
     "asynckit": "^0.4.0",
-    "auth0-js": "^8.12.3",
+    "auth0-js": "^9.13.2",
     "auth0-lock": "^10.24.3",
     "autoprefixer": "^6.4.1",
     "aws-sign2": "^0.6.0",
