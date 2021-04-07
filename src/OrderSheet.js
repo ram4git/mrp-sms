@@ -4,7 +4,8 @@ import Auth, { connectProfile, userInfo } from './auth';
 import Items from './Items';
 import './OrderSheet.css';
 import { Divider, Table, Loader } from 'semantic-ui-react';
-import moment from 'moment';
+import moment from 'moment-es6';
+import {camelCaseToRegularCase} from './utils/helper';
 
 
 const LOADING = 'loading';
@@ -45,11 +46,9 @@ class OrderSheet extends Component {
     if(!msg) {
       return;
     }
-
     return (
-      <div className="splMsg">
-        <hr />
-        <p>{ msg }</p>
+      <div className="p-4 bg-yellow-200 rounded-lg my-4 shadow-lg">
+        <p className='text-lg text-blue-600 text-center'>{ msg }</p>
       </div>
     );
   }
@@ -162,7 +161,97 @@ class OrderSheet extends Component {
 
   }
 
-  renderCart(cart) {
+
+  renderPartyDetails() {
+    const {          area,
+      agent,
+      lPrice,
+      agentPrice,
+      party,
+      quantityInTons,
+      noOfBags,
+      total,
+      partyName,
+      partyDetails} = this.state.orderData;
+
+      return (
+        <div className="cart" className='py-4 px-4 border border-w-1 border-gray-900'>
+          <div className="summary w-full my-4 ">
+          <table className="summary">
+            <tr className='p-2 my-2'>
+              <td className="w-1/4 text-blue-700 py-1"><h3>Agent<span>:</span></h3></td>
+              <td className="text-align-start capitalize">{agent}</td>
+            </tr>
+            <tr className='p-2 my-2'>
+              <td className="w-1/4 text-blue-700 py-1"><h3>PartyName<span>:</span></h3></td>
+              <td className="text-align-start capitalize">{partyName}</td>
+            </tr>
+            <tr className='p-2 my-2'>
+              <td className="w-1/4 text-blue-700 py-1"><h3>Party Details<span>:</span></h3></td>
+              <td className="text-align-start capitalize">{partyDetails}</td>
+            </tr>
+            <tr className='p-2 my-2'>
+              <td className="w-1/4 text-blue-700 py-1"><h3>Area<span>:</span></h3></td>
+              <td className="text-align-left">{camelCaseToRegularCase(area)}</td>
+            </tr>
+            </table>
+          </div>
+        </div>
+      )
+  }
+
+  renderCart() {
+    const {          area,
+      product,
+      lPrice,
+      agentPrice,
+      party,
+      quantityInTons,
+      noOfBags,
+      total,
+      partyDetails} = this.state.orderData;
+
+    return (
+      <div className="cart" style={{textAlign: 'center'}}>
+        <div className="summary w-full my-4 border border-w-1 border-gray-900 py-4">
+          <table className="summary">
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Product<span>:</span></h3></td>
+              <td className="value text-align-start capitalize"><strong>{camelCaseToRegularCase(product)}</strong></td>
+            </tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Area<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{camelCaseToRegularCase(area)}</strong></td>
+            </tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Total Order Weight<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{quantityInTons}</strong> tons </td>
+            </tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>No of bags<span>:</span></h3></td>
+              <td className="value text-align-left"><strong>{noOfBags}</strong> </td>
+            </tr>
+
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Agent Price<span>:</span></h3></td>
+              <td className="value text-green-600"><strong>₹{parseFloat(agentPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Lalitha's Price<span>:</span></h3></td>
+              <td className="value text-green-600"><strong>₹{parseFloat(lPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+            <tr className='h-2 bg-gray-50'></tr>
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Total Price<span>:</span></h3></td>
+              <td className="value text-green-600 font-bold"><strong>₹{parseFloat(total).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    );
+  }
+
+  renderCart2(cart) {
     const { discount_amount, totalPrice, grossPrice, shopDetail, selectedLorrySize, totalWeight } = cart;
     const shops = [];
     shopDetail.forEach( shop => {
@@ -214,7 +303,7 @@ class OrderSheet extends Component {
   }
 
   componentDidMount() {
-    const orderPath = `orders/${this.props.params.orderId}`;
+    const orderPath = `o/${this.props.params.orderId}`;
     const orderRef = firebase.database().ref().child(orderPath);
     orderRef.on('value', snap => {
       const orderData = snap.val();
@@ -254,15 +343,15 @@ class OrderSheet extends Component {
     }
 
     const { nickname, name } = userInfo();
-    const date = new Date();
-    const timeString  =  date.toLocaleDateString('en-IN')+ ' - ' + date.toLocaleTimeString('en-IN');
+    const {agent} = this.state.orderData;
+    const timeString = moment().format('DD/MMM/YY - HH:mm:ssA');
 
     return (
       <div className="orderData page">
         { this.renderPageHeader() }
         { this.renderOrderDetails() }
         { this.renderMainOrder() }
-        { this.renderAbstractOrder() }
+        {/* { this.renderAbstractOrder() } */}
         <footer>printed at { timeString } by <strong>{ nickname }</strong> ({ name })</footer>
       </div>
     );
@@ -280,6 +369,7 @@ class OrderSheet extends Component {
   renderMainOrder() {
     return (
       <div>
+        {this.renderPartyDetails()}
         { this.renderCart(this.state.orderData.cart) }
         { this.renderSpecialMsg(this.state.orderData.orderMsg) }
       </div>
@@ -287,18 +377,16 @@ class OrderSheet extends Component {
   }
 
   renderOrderDetails() {
-    const { time, userName} = this.state.orderData;
+    const { time, userName, ts, agent} = this.state.orderData;
     const orderId = this.props.params.orderId;
-    const orderDate = new Date(time);
-    const orderTimeString  =  orderDate.toLocaleDateString('en-IN')+ ' - ' + orderDate.toLocaleTimeString('en-IN');
-
-    const currentDate = new Date();
-    const currentTimeString  =  currentDate.toLocaleDateString('en-IN')+ ' - ' + currentDate.toLocaleTimeString('en-IN');
-    const delayInHours = moment(orderDate).toNow(true)
+    const m = moment(ts, 'YYYY-MM-DD - HH:mm:ssA');
+    const orderTimeString = m.format('DD/MMM/YY - HH:mm:ssA');
+    const currentTimeString = moment().format('DD/MMM/YY - HH:mm:ssA')
+    const delayInHours = m.toNow(true)
 
     return (
       <div className="orderHeader">
-        <h3>{ userName }<span>{`'s Order`}</span></h3>
+        <h3>{ agent }<span>{`'s Order`}</span></h3>
         <h3>{ orderId }</h3>
         <table>
           <tr>

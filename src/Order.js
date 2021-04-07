@@ -20,7 +20,16 @@ const statusColorMap = {
   'onhold': '#ffebcc',
   'completed': '#9fdf9f',
   'dispatched': '#9fdf9f',
-  'cancelled': '#ffb399'
+  'cancelled': '#ffb399',
+  'received': '#ccccff',
+  'onhold': '#ffebcc',
+  'completed': '#9fdf9f',
+  'dispatched': '#9fdf9f',
+  'cancelled': '#ffb399',
+  'pending': 'darkorange',
+  'approve': 'lightgreen',
+  'pending_approval': 'orange',
+  paid: 'darkgreen'
 }
 
 class Order extends Component {
@@ -248,7 +257,7 @@ class Order extends Component {
   renderUpdatePayment = () => {
     const {payments = {}} = this.state.orderData;
     return(
-      <div className="w-full rounded-lg shadow-lg bg-blue-200 py-4 my-8 px-8">
+      <div className="w-full rounded-lg shadow-lg bg-blue-200 py-4 my-8 px-8 pb-4">
       <h1 className='text-center text-2xl'>Payments</h1>
 
       <p className='font-bold'>Payments made</p>
@@ -326,15 +335,12 @@ class Order extends Component {
 
     return (
 
-      <div>
+      <div className='pb-8'>
         <div className="order">
           <div className="detail">
             <div className="actionIcons">
               <Button.Group>
                 <Button labelPosition='left' icon='left chevron' content='Previous Order' />
-                <a href={ `/order/updates/${orderId}` } target="_blank">
-                  <Button icon='edit' content='Updates' onClick={ this.show(true) }/>
-                </a>
                 <a href={ `/print/${orderId}` } target="_blank">
                   <Button icon='print' content='Print' />
                 </a>

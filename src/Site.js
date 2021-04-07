@@ -20,10 +20,11 @@ class Site extends Component {
   render() {
     return (
       <div>
-        <div className="Site one-edge-shadow">
-          <div className="Site-header">
-            <img src="./LalithaBrand.png" alt="Lalitha Industries" height="32"/>
+        <div className="bg-green-600 flex flex-row justify-center space-between lg:max-w-6xl mx-auto shadow-2xl rounded-lg overflow-hidden">
+          <div className="p-2 flex-grow-0">
+            <img src="./LalithaBrand.png" alt="Lalitha Industries" height="32" className='h-16 w-auto' />
           </div>
+        
           { this.renderUserControls() }
         </div>
         <div className="Site-page">
@@ -39,24 +40,25 @@ class Site extends Component {
 
     if (access_token) {
         return (
-          <div className="Site-profileControls">
-            <div className="menu-item">
-              <a onClick={() => logout()}><h4><FaLogout />Log Out</h4></a>
+          <div className="flex-grow flex justify-center flex-row items-center">
+
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/dailyprices"><FaTags className='m-0 p-0 text-2xl' /><p className=''>DailyPrices</p></Link>
             </div>
-            <div className="menu-item">
-              <Link to="/dailyprices"><h4><FaTags />DailyPrices</h4></Link>
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/dailyprice"><FaTags className='m-0 p-0 text-2xl' /><p className=''>DailyPrices History</p></Link>
             </div>
-            <div className="menu-item">
-              <Link to="/dailyprice"><h4><FaTags />DailyPrices History</h4></Link>
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/users"><FaUsers className='m-0 p-0 text-2xl' /><p className=''>Users</p></Link>
             </div>
-            <div className="menu-item">
-              <Link to="/users"><h4><FaUsers />Users</h4></Link>
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/orders"><FaOrderList className='m-0 p-0 text-2xl' /><p className=''>Orders</p></Link>
             </div>
-            <div className="menu-item">
-              <Link to="/orders"><h4><FaOrderList />Orders</h4></Link>
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/console"><FaSettings className='m-0 p-0 text-2xl' /><p className=''>Settings</p></Link>
             </div>
-            <div className="menu-item">
-              <Link to="/console"><h4><FaSettings />Settings</h4></Link>
+            <div className="menu-item text-center">
+              <a onClick={() => logout()}><FaLogout className='m-0 p-0 text-2xl'/><p>Log Out</p></a>
             </div>
           </div>
         );
@@ -74,7 +76,7 @@ class Site extends Component {
       // }
     } else {
       return (
-        <div className="Site-profileControls">
+        <div className="flex-grow">
           <Link to="/login"><h4><FaLogin />Log In</h4></Link>
         </div>
       );

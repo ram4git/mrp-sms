@@ -15,6 +15,15 @@ const statusColorMap = {
   'onhold': 'orange',
   'cancelled': 'red',
   'dispatched': 'green',
+  'received': '#ccccff',
+  'onhold': '#ffebcc',
+  'completed': '#9fdf9f',
+  'dispatched': '#9fdf9f',
+  'cancelled': '#ffb399',
+  'pending': 'darkorange',
+  'approve': 'lightgreen',
+  'pending_approval': 'orange',
+  paid: 'darkgreen'
   
 }
 
@@ -162,9 +171,9 @@ class OrderUpdate extends Component {
     const updates = this.state.updates;
     const updateTypes = [
       {
-        key: 'approve',
-        value: 'approve',
-        text: 'STATUS: APPROVE'
+        key: 'approved',
+        value: 'approved',
+        text: 'STATUS: APPROVED'
       },
       {
         key: 'onhold',
@@ -205,7 +214,7 @@ class OrderUpdate extends Component {
     ];
 
     return (
-      <div className="w-full rounded-lg shadow-lg bg-blue-200 py-4">
+      <div className="w-full rounded-lg shadow-lg bg-blue-200 py-4 pb-8">
         <h1 className='text-center text-2xl'>Update Status</h1>
         <AlertContainer ref={ a => this.msg = a} {...this.alertOptions} />
           <Comment.Group>

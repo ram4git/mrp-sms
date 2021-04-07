@@ -23,7 +23,9 @@ class StatusColorFormatter extends Component {
       'dispatched': '#9fdf9f',
       'cancelled': '#ffb399',
       'pending': 'darkorange',
-      'approved': 'lightgreen'
+      'approved': 'lightgreen',
+      'pending_approval': 'orange',
+      paid: 'darkgreen'
     }
   }
   render() {
@@ -39,7 +41,10 @@ class StatusColorFormatter extends Component {
       backgroundColor: this.colorMap[this.props.value],
       textAlign: 'center',
       padding: '4px',
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      borderRadius: 8,
+      padding: '2px 0.5em',
+      color: 'white'
     };
   }
 }
@@ -250,13 +255,12 @@ class Orders extends Component {
 
   render() {
     return (
-      <div tabTitle="Orders" className="orders">
+      <div tabTitle="Orders" className="py-8 mx-8 mx-auto">
         <ReactDataGrid
           columns={this._columns}
           rowGetter={this.rowGetter.bind(this)}
           rowsCount={this.rowsCount()}
           onGridSort={this.handleGridSort.bind(this)}
-          minHeight={500}
           toolbar={<Toolbar enableFilter={true}/>}
           onAddFilter={this.handleFilterChange.bind(this)}
           getValidFilterValues={this.getValidFilterValues}
