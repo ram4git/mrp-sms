@@ -767,7 +767,7 @@
     "query-string": "^4.3.4",
     "querystring": "^0.2.0",
     "querystring-es3": "^0.2.1",
-    "querystringify": "^1.0.0",
+    "querystringify": "^2.0.0",
     "raf": "^3.4.0",
     "randomatic": "^1.1.7",
     "range-parser": "^1.2.0",
