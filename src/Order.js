@@ -7,9 +7,10 @@ import classNames from 'classnames';
 import FaEyeClose from 'react-icons/lib/fa/eye-slash';
 import FaEyeOpen from 'react-icons/lib/fa/eye';
 import moment from 'moment-es6';
-import { Button, Modal, Header, Image, Divider, Table, Loader } from 'semantic-ui-react';
+import { Button, Modal, Header, Image, Divider, Table, Loader, Form } from 'semantic-ui-react';
 import {camelCaseToRegularCase} from './utils/helper';
 
+import { userInfo } from './auth';
 
 const LOADING = 'loading';
 const ERROR = 'error';
@@ -31,7 +32,11 @@ class Order extends Component {
         loading: LOADING
       },
       open: false,
-      isAgent: false
+      isAgent: false,
+      paymentUpdate: {
+        amount: 0,
+        text: 0
+      }
     };
   }
 
@@ -158,9 +163,138 @@ class Order extends Component {
 
   }
 
+
+  renderUpdateSection = () => {
+    return <OrderUpdate orderId={this.props.params.orderId} />
+  }
+
+  handlePaymentUpdate = () => {
+
+    const orderPath = `o/${this.props.params.orderId}`;
+    const orderPaymentsPath = `${orderPath}/payments`;
+    const orderPaymentsRef = firebase.database().ref().child(orderPaymentsPath).push();
+    const { nickname, name } = userInfo();
+
+    const update = {
+      updateMsg: this.state.paymentText,
+      timestamp: moment().format('YYYY-MM-DD HH:mm:ssA'),
+      name: name,
+      nickname: nickname,
+      amount: this.state.paymentAmout
+    };
+
+
+
+    orderPaymentsRef.update(update, error => {
+      if(error) {
+        this.setState({paymetUpdateError: 'Unable to update payments. Try after sometime'})
+      } else {
+        this.setState({
+          paymentText: '',
+          paymentAmout: 0,
+          paymetUpdateError: ''
+        })
+      }
+    });
+  }
+
+  renderPaymentsTable = () => {
+
+    const {payments} = this.state.orderData;
+    const rowList = [];
+    let totalPayments = 0;
+
+
+    Object.keys(payments).forEach((id, index) => {
+      const {name, nickname, updateMsg, amount, timestamp} = payments[id];
+      const m = moment(timestamp, 'YYYY-MM-DD HH:mm:ssA');
+      totalPayments = totalPayments + parseFloat(amount);
+      rowList.push (
+        <Table.Row >
+          <Table.Cell>{index+1}</Table.Cell>
+          <Table.Cell><p>{nickname||name} on <span className='font-bold text-blue-800'>{m.format('DD/MMM/YY HH:mm')}</span><span className='text-gray-400'>{' '}( {m.fromNow()})</span></p></Table.Cell>
+          <Table.Cell>{updateMsg}</Table.Cell>
+          <Table.Cell textAlign='right' className='font-bold text-xl'>{amount.toLocaleString()}</Table.Cell>
+        </Table.Row>
+      )
+    });
+
+    return (
+      <Table celled className='my-8'>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>#</Table.HeaderCell>
+          <Table.HeaderCell>Updated</Table.HeaderCell>
+          <Table.HeaderCell>Notes</Table.HeaderCell>
+          <Table.HeaderCell>Amount</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {rowList}
+      </Table.Body>
+      <Table.Footer>
+        <Table.Row >
+          <Table.Cell></Table.Cell>
+          <Table.Cell></Table.Cell>
+          <Table.Cell className='font-bold'>Total</Table.Cell>
+          <Table.Cell textAlign='right' className='font-bold text-2xl'>{totalPayments.toLocaleString()}</Table.Cell>
+        </Table.Row>
+      </Table.Footer>
+      </Table>
+    )
+  }
+
+
+  renderUpdatePayment = () => {
+    const {payments = {}} = this.state.orderData;
+    return(
+      <div className="w-full rounded-lg shadow-lg bg-blue-200 py-4 my-8 px-8">
+      <h1 className='text-center text-2xl'>Payments</h1>
+
+      <p className='font-bold'>Payments made</p>
+      {
+        Object.keys(payments).length
+        ? this.renderPaymentsTable()
+        : null
+      }
+      <div className='w-full flex flex-row mx-auto mx-4'>
+
+      <Form onSubmit={this.handlePaymentUpdate} className='w-full'>
+          <Form.Group>
+            <Form.Input
+              name='amount'
+              required={true}
+              type='number'
+              min={0}
+              placeholder='amount'
+              width={4}
+              value={this.state.paymentAmout}
+              onChange={e => this.setState({paymentAmout: e.target.value})}
+            />
+            <Form.Input
+              width={10}
+              name='notes'
+              required={true}
+              type='text'
+              placeholder='note'
+              value={this.state.paymentText}
+              onChange={e => this.setState({paymentText: e.target.value})}
+            />
+            <Form.Button width={2} primary content='Update' />
+          </Form.Group>
+        </Form>
+        {
+          this.state.paymetUpdateError ?
+          <p className='text-center text-red-800 font-bold text-lg'>{this.state.paymetUpdateError}</p> : 
+          null
+        }
+      </div>
+      </div>
+    )
+  }
+
   render() {
 
-   console.log('===', this.state);
     if(this.state.orderData.loading === LOADING) {
       return <Loader />
     }
@@ -217,6 +351,9 @@ class Order extends Component {
             </ul>
             { this.renderCart(this.state.orderData.cart) }
             { this.renderSpecialMsg(this.state.orderData.orderMsg) }
+            {this.renderUpdatePayment()}
+
+            {this.renderUpdateSection()}
           </div>
         </div>
         <footer>© MRP Solutions 2017</footer>
