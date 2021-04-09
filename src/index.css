@@ -40,21 +40,20 @@ pre {
 
 .price-list .react-grid-Container {
   min-width: 100% !important;
+}
+
+/* .price-list .react-grid-Main {
   min-height: 800px;
-}
-
-.price-list .react-grid-Main {
-  min-height: 800px;
-}
+} */
 
 
-.price-list .react-grid-Canvas {
+/* .price-list .react-grid-Canvas {
   min-height: 1200px !important;
-}
+} */
 
-.price-list .react-grid-Grid {
+/* .price-list .react-grid-Grid {
   min-height: 1200px !important;
-}
+} */
 
 .control-panel {
   min-width: 100% !important;
@@ -378,12 +377,12 @@ footer {
 }
 
 .price-list .react-grid-HeaderRow>div {
-  height: 240px !important;
+  height: 72px !important;
 }
 
 
 .price-list .react-grid-Viewport {
-  top: 240px !important;
+  top: 72px !important;
   overflow-y: scroll !important;
 }
 
@@ -483,9 +482,6 @@ div.widget-HeaderCell__value {
     height: 60px !important;
 }
 
-.price-list .react-grid-HeaderRow {
-  height: 240px !important;
-}
 
 .pirce-list div.react-grid-HeaderCell {
   height: 60px !important;
@@ -501,7 +497,6 @@ div.widget-HeaderCell__value {
   border-style: solid;
   border-right: 1px black;
   border-collapse: collapse;
-  height: 240px !important;
 }
 
 .productHeader {
@@ -561,7 +556,6 @@ div.widget-HeaderCell__value {
   border-style: solid;
   border-left: 1px black;
   border-collapse: collapse;
-  height: 240px !important;
 }
 
 .price-list .react-grid-Row .react-grid-Cell:nth-child(odd) {

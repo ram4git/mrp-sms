@@ -98,9 +98,9 @@ class AddProduct extends Component {
               <select value={ this.state.productType }
                 onChange={this.updateInputValue.bind(this,'productType')}
                 { ...opts }>
-                <option value="rice">RICE</option>
-                <option value="ravva">RAVVA</option>
-                <option value="broken">BROKEN RICE</option>
+                <option value="rice">Wheat</option>
+                <option value="ravva">Paddy</option>
+                <option value="broken">BROKEN</option>
               </select>
             </span>
           </li>

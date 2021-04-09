@@ -256,6 +256,7 @@ class Orders extends Component {
   render() {
     return (
       <div tabTitle="Orders" className="py-8 mx-8 mx-auto">
+        <h1 className='text-3xl text-green-600 text-center mx-auto'>Purchase Orders</h1>
         <ReactDataGrid
           columns={this._columns}
           rowGetter={this.rowGetter.bind(this)}
@@ -265,6 +266,7 @@ class Orders extends Component {
           onAddFilter={this.handleFilterChange.bind(this)}
           getValidFilterValues={this.getValidFilterValues}
           onClearFilters={this.handleOnClearFilters}
+          minHeight={this.rowsCount()*37+40}
         />
         <footer>© MRP Solutions 2017</footer>
       </div>

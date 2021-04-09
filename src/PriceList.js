@@ -133,7 +133,7 @@ class PriceList extends Component {
           const productAgentKey = [productKey,'Agent'].join('$');
           const productOutletKey = [productKey,'Outlet'].join('$');
           const agentName = this.renderCustomProduct(product.name, 'Agent', productType, productKey);
-          const outletName = this.renderCustomProduct(product.name, 'Outlet', productType, productKey);
+          const outletName = this.renderCustomProduct(product.name, 'Party', productType, productKey);
 
           productTypeCols.push({
             key: productAgentKey,
@@ -347,7 +347,7 @@ class PriceList extends Component {
     return (
       <div className="productHeader">
         <div className="productType">{ `${productName}` }</div>
-        <img  src={imgUrl} alt={productKey} width="100"/>
+        {/* <img  src={imgUrl} alt={productKey} width="100"/> */}
         <div className="priceType">{ `${priceType}` }</div>
         <div className="priceChange" key={ colKey }>
           <input type="number"
@@ -380,13 +380,13 @@ class PriceList extends Component {
       <AlertContainer ref={ a => this.msg = a} {...this.alertOptions} />
 
       <Menu >
-        <Menu.Item name='rice' active={this.state.productType === 'rice'} onClick={() => { this.changeProductType('rice'); }} />
-        <Menu.Item name='ravva' active={this.state.productType === 'ravva'} onClick={() => { this.changeProductType('ravva'); }} />
+        <Menu.Item name='wheat' active={this.state.productType === 'rice'} onClick={() => { this.changeProductType('rice'); }} />
+        <Menu.Item name='paddy' active={this.state.productType === 'ravva'} onClick={() => { this.changeProductType('ravva'); }} />
         <Menu.Item name='broken' active={this.state.productType === 'broken'} onClick={() => { this.changeProductType('broken'); }} />
       </Menu>
 
 
-      <p><span style={ {color: '#ecf2f9' } }>██ </span> is agent price. <span style={ {color: '#fff7e6' } }>██ </span> is outlet price </p>
+      <p><span style={ {color: '#ecf2f9' } }>██ </span> is agent price. <span style={ {color: '#fff7e6' } }>██ </span> is party price </p>
       <p>Double click on the price to change</p>
 
       <ReactDataGrid
@@ -394,7 +394,7 @@ class PriceList extends Component {
         columns={this.state.cols[productType].sort((a,b) => {return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : (a.className === 'outlet' ? 1 : -1));})}
         rowGetter={this.rowGetter.bind(this)}
         rowsCount={this.state.rows[productType].length}
-        minHeight={2000}
+        minHeight={this.state.rows[productType].length*35+80}
         onGridRowsUpdated={this.handleGridRowsUpdated.bind(this)} />
       <Button className="update-button" onClick={ this.updatePrices.bind(this) } theme={ theme } disabled={ false }><FaSave />SAVE</Button>
       <Button className="sms-button" onClick={ this.sendSMS.bind(this) } theme={ theme } disabled={ false }><FaMail />SEND SMS</Button>

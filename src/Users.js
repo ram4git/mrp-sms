@@ -165,7 +165,7 @@ class Users extends Component {
           isActive: user.active ? 'ACTIVATED' : 'DISABLED',
           address: user.address,
           email:user.email,
-          isAgent: user.isAgent ? 'AGENT' : 'OUTLET',
+          isAgent: user.isAgent ? 'AGENT' : 'PARTY',
           mobile:user.mobile
         });
       }

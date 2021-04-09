@@ -20,7 +20,7 @@ class Site extends Component {
   render() {
     return (
       <div>
-        <div className="bg-green-600 flex flex-row justify-center space-between lg:max-w-6xl mx-auto shadow-2xl rounded-lg overflow-hidden">
+        <div className="bg-green-600 flex flex-row justify-center space-between lg:max-w-6xl mx-auto shadow-lg rounded-b-lg overflow-hidden">
           <div className="p-2 flex-grow-0">
             <img src="./LalithaBrand.png" alt="Lalitha Industries" height="32" className='h-16 w-auto' />
           </div>
@@ -76,8 +76,10 @@ class Site extends Component {
       // }
     } else {
       return (
-        <div className="flex-grow">
-          <Link to="/login"><h4><FaLogin />Log In</h4></Link>
+        <div className="flex-grow flex justify-center flex-row items-center">
+          <div className="menu-item text-center">
+            <Link className='px-2 flex flex-col justify-center items-center' to="/login"><FaLogin className='m-0 p-0 text-2xl' /><p>Log In</p></Link>
+          </div>
         </div>
       );
     }

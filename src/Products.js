@@ -63,7 +63,7 @@ class Products extends Component {
         </Collapse>
 
         <Collapse>
-          <Panel header="Rice" key="rice">
+          <Panel header="Paddy" key="rice">
             <Collapse>
               { this.getProducts('rice') }
             </Collapse>
@@ -72,7 +72,7 @@ class Products extends Component {
 
 
         <Collapse>
-          <Panel header="Ravva" key="ravva">
+          <Panel header="Paddy" key="ravva">
             <Collapse>
               { this.getProducts('ravva') }
             </Collapse>

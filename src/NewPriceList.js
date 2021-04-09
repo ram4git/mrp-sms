@@ -74,13 +74,13 @@ class NewPriceList extends Component {
     return <div className="priceList">
       <AlertContainer ref={ a => this.msg = a} {...this.alertOptions} />
       <Menu fluid widths={5}>
-        <Menu.Item name='rice' active={ productType === 'rice' } onClick={this.handleItemClick} />
-        <Menu.Item name='ravva' active={ productType === 'ravva' } onClick={this.handleItemClick} />
+        <Menu.Item name='rice' active={ productType === 'wheat' } onClick={this.handleItemClick} />
+        <Menu.Item name='ravva' active={ productType === 'paddy' } onClick={this.handleItemClick} />
         <Menu.Item name='broken' active={ productType === 'broken' } onClick={this.handleItemClick} />
       </Menu>
       <div className="table">
         <p><span style={ {color: '#ecf2f9' } }>██ </span> is agent price. <span style={ {color: '#fff7e6' } }>██ </span> is outlet price </p>
-        <p>Double click on the price to change</p>
+        <p> 32</p>
         { this.renderPriceListButtons() }
         { this.renderPriceListTable() }
         { this.renderPriceListButtons() }
@@ -105,7 +105,7 @@ class NewPriceList extends Component {
     const productType = this.state.productType;
 
     return <div>
-      <p><span style={ {color: '#ecf2f9' } }>██ </span> is agent price. <span style={ {color: '#fff7e6' } }>██ </span> is outlet price </p>
+      <p><span style={ {color: '#ecf2f9' } }>██ </span> is party price. <span style={ {color: '#fff7e6' } }>██ </span> is outlet price </p>
       <p>Double click on the price to change</p>
 
       <ReactDataGrid
@@ -146,13 +146,11 @@ class NewPriceList extends Component {
         rows[productType] = productTypeRows;
       });
 
-      console.log("XXX: Rows loaded");
 
       this.setState({
         rows: rows,
         rowsLoading: false
       });
-      console.log("XXX: Rows Set");
 
     });
 
@@ -168,7 +166,7 @@ class NewPriceList extends Component {
           const productAgentKey = [productKey,'Agent'].join('$');
           const productOutletKey = [productKey,'Outlet'].join('$');
           const agentName = this.renderCustomProduct(product.name, 'Agent', productType, productKey);
-          const outletName = this.renderCustomProduct(product.name, 'Outlet', productType, productKey);
+          const outletName = this.renderCustomProduct(product.name, 'Party', productType, productKey);
 
           productTypeCols.push({
             key: productAgentKey,
@@ -193,14 +191,12 @@ class NewPriceList extends Component {
         });
         cols[productType] = productTypeCols;
       });
-      console.log("XXX: Cols loaded");
 
 
       this.setState({
         cols: cols,
         colsLoading: false
       });
-      console.log("XXX: Cols set");
 
     });
 
