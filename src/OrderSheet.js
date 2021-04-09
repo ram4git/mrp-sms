@@ -211,6 +211,9 @@ class OrderSheet extends Component {
       total,
       partyDetails} = this.state.orderData;
 
+      const priceDifference = parseFloat(agentPrice) - parseFloat(lPrice);
+
+
     return (
       <div className="cart" style={{textAlign: 'center'}}>
         <div className="summary w-full my-4 border border-w-1 border-gray-900 py-4">
@@ -231,15 +234,16 @@ class OrderSheet extends Component {
               <td className="key text-blue-700 py-1"><h3>No of bags<span>:</span></h3></td>
               <td className="value text-align-left"><strong>{noOfBags}</strong> </td>
             </tr>
-
-            <tr className='p-1 my-2'>
-              <td className="key text-blue-700 py-1"><h3>Agent Price<span>:</span></h3></td>
-              <td className="value text-green-600"><strong>₹{parseFloat(agentPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
-            </tr>
             <tr className='p-1 my-2'>
               <td className="key text-blue-700 py-1"><h3>Lalitha's Price<span>:</span></h3></td>
               <td className="value text-green-600"><strong>₹{parseFloat(lPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
             </tr>
+
+            <tr className='p-1 my-2'>
+              <td className="key text-blue-700 py-1"><h3>Agent Price<span>:</span></h3></td>
+              <td className="value text-green-600"><span className={priceDifference > 0 ? 'bg-red-600 px-2 py-1 text-white font-bold rounded-md' : 'bg-green-600 px-2 py-1 text-white font-bold rounded-md mr-4'}>{priceDifference > 0 ? '+' : '-' }{priceDifference}</span><strong className=''>₹{parseFloat(agentPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</strong></td>
+            </tr>
+
             <tr className='h-2 bg-gray-50'></tr>
             <tr className='p-1 my-2'>
               <td className="key text-blue-700 py-1"><h3>Total Price<span>:</span></h3></td>
