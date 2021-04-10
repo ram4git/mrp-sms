@@ -58,7 +58,7 @@ class UserLinkFormatter extends Component {
   render() {
     return (
       <div>
-        <Link to={`/user/${this.props.value}`}>{ this.props.value }</Link>
+        <Link to={`/agent/${this.props.value}`}>{ this.props.value }</Link>
       </div>
     );
   }
@@ -153,7 +153,7 @@ class Users extends Component {
 
   componentDidMount() {
     const that = this;
-    const usersRef = this.data.dbRef.child('users');
+    const usersRef = this.data.dbRef.child('agents');
     usersRef.on('value', snapshot => {
       let tablerows = [];
       let users = snapshot.val();
@@ -219,7 +219,7 @@ class Users extends Component {
   render() {
     return (
       <div tabTitle="Users" className="orders">
-        <Link to="/new-user" className="newUserLink">Create new Party</Link>
+        <Link to="/new-user" className="newUserLink">Create new agent</Link>
         <ReactDataGrid
           columns={this._columns}
           rowGetter={this.rowGetter.bind(this)}

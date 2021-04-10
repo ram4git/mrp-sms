@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Link} from 'react-router';
-import { Button, Form, Message, Divider } from 'semantic-ui-react'
+import { Button, Form, Message, Divider, Dropdown } from 'semantic-ui-react'
 import * as firebase from 'firebase';
 
 
@@ -43,7 +43,8 @@ class CreateUser extends Component {
         <Form.Group unstackable widths={3}>
           <Form.Input label='Name' placeholder='Name' width={6} onChange={ this.updateInputValue.bind(this,'name') } required error={!this.state.name}/>
           <Form.Input label='Shop Name' placeholder='Shop Name'width={6} onChange={ this.updateInputValue.bind(this,'shopName') } required error={!this.state.shopName}/>
-          <Form.Select label='Area' options={this.state.areaOptions} placeholder='Area' width={4} onChange={ this.updateSelectedArea.bind(this) } required error={!this.state.areaId}/>
+          <Form.Dropdown label='Areas' multiple selection options={this.state.areaOptions} placeholder='Select areas' width={4} onChange={ this.updateSelectedArea.bind(this) } required error={!this.state.areaId}/>
+
         </Form.Group>
         <Form.Group widths={4}>
           <Form.Input label='mobile' placeholder='mobile' onChange={ this.updateInputValue.bind(this,'mobile')} required error={!this.state.mobile}/>
@@ -201,23 +202,25 @@ class CreateUser extends Component {
   		let foo = {}; const now = (new Date().getTime()) * -1;
   		foo = {
   			email : email,
-  			active: true,
+  			active: false,
   			name : name ,
   			mobile : shopNumber,
   			isAgent : false,
   			address : fulladdress,
   			authId : authId,
   			priority : now,
-  			shops : shops
+        areas: areaId
 			};
 
 			//set the user
-  		const usersRef = dbRef.child('users/'+ shopNumber );
-      const promise = usersRef.set(foo);
-      this.setState({
-        errMsg: '',
-        successMsg: `user ${email} has been succesfully created.`
-      })
+  		const agentRef = dbRef.child(`agents/${authId}`);
+      const promise = agentRef.set(foo).then(() => {
+        this.setState({
+          errMsg: '',
+          successMsg: `user ${email} has been succesfully created.`
+        })
+      });
+
     }).catch(e => {
       console.log(e);
       this.setState({

@@ -14,6 +14,7 @@ import Collapsible from 'react-collapsible';
 import AddShop from './AddShop';
 import DeleteShop from './DeleteShop';
 import AddAllowedArea from './AddAllowedArea';
+import AddParty from './AddParty';
 import {Link} from 'react-router';
 
 
@@ -38,7 +39,7 @@ class Items extends Component {
         if(item) {
             counter++;
             rows.push(
-              <tr>
+              <tr key={counter}>
                 <th scope="row">{counter}</th>
                 <td>{item.name}</td>
                 <td>{item.city}</td>
@@ -96,19 +97,30 @@ class User extends Component {
       expandedRows : [],
       addShop: false,
       showModal: false,
-      deleteShop : false
+      deleteShop : false,
+      showPartyModal: false,
     };
   }
 
   fetchUserData() {
-    const userPath = `users/${this.props.params.userId}`;
+    const userPath = `agents/${this.props.params.userId}`;
     const userRef = firebase.database().ref().child(userPath);
     userRef.on('value', snap => {
       const userData = snap.val();
+      console.log('U=', userData);
       if(userData) {
         this.setState({
           userData
         });
+        const partiesPath = `p/${userData.authId}/parties`;
+        const partiesRef = firebase.database().ref().child(partiesPath);
+        partiesRef.on('value', s => {
+          const parties = s.val();
+          console.log('PARTIES=', parties);
+          if(parties) {
+            this.setState({parties});
+          }
+        })
       } else {
         this.setState({
           userData: {
@@ -276,11 +288,9 @@ class User extends Component {
 
     renderAreaItem(item) {
          return (
-             <div style={{height:40, backgroundColor:'#E6E6FF', marginTop:10}} key={item}>
-                 <div style={{color:'#16A085', fontSize:16, marginLeft:20, marginTop:'auto', marginBottom:'auto'}}>
-                   {item}
-                 </div>
-             </div>
+          <div className='py-2 bg-blue-600 px-6 py-2 mx-4 rounded-full text-white'>
+            {item}
+          </div>
          );
      }
 
@@ -321,6 +331,12 @@ class User extends Component {
        })
      }
 
+     closePartyModal = () => {
+      this.setState({
+        showPartyModal:false
+      })
+    }
+
      closeAddShopModal = () => {
        this.setState({
          addShop : false
@@ -336,7 +352,9 @@ class User extends Component {
 
 
   renderShops() {
-    const {userData, renderShopsTable}=this.state;
+    const {userData = {}, renderShopsTable}=this.state;
+    const {authId} = userData;
+
     let allItemRows = [];
 
        userData.shops && userData.shops.forEach((item , index)=> {
@@ -420,27 +438,89 @@ class User extends Component {
   renderAreas() {
     const {userData}=this.state;
     let allItemRows = [];
-    userData.allowedAreas && userData.allowedAreas.forEach(item => {
+
+    userData.areas && userData.areas.forEach(item => {
       const perItemRows = this.renderAreaItem(item);
         allItemRows = allItemRows.concat(perItemRows);
     });
     return (
       <div>
-      <Modal onClose={this.closeModal} open={this.state.showModal}
-      trigger={<Button color='teal' style={{marginTop:10,marginLeft:10}}
-      onClick={() => this.setState({showModal:true})}>Add Area</Button>}
-      centered={false}>
-       <Modal.Content>
-         <AddAllowedArea
-          userId={this.props.params.userId}
-          closeModal={this.closeModal}
-          existingAreas={userData.allowedAreas}
-          />
-       </Modal.Content>
-      </Modal>
-      <div>{allItemRows}</div>
+        <Modal onClose={this.closeModal} open={this.state.showModal}
+          trigger={<div className='pl-4'><Button color='teal'
+          onClick={() => this.setState({showModal:true})}>Edit Areas</Button></div>}
+          centered={true}>
+          <Modal.Content>
+            <AddAllowedArea
+              userId={this.props.params.userId}
+              closeModal={this.closeModal}
+              existingAreas={userData.areas}
+              />
+          </Modal.Content>
+        </Modal>
+        <div className='flex flex-row py-4'>
+          {allItemRows}
+        </div>
       </div>
+
     )
+  }
+
+  togglePartyStatus({partyId, status}) {
+    const partyStatusRef=`p/${this.state.userData.authId}/parties/${partyId}/status`;
+    const partyStatus = firebase.database().ref().child(partyStatusRef);
+    partyStatus.set(!status);
+  }
+
+  renderParties() {
+    const {parties={}, userData} = this.state;
+    const partyList = [];
+    Object.keys(parties).forEach(p => {
+      const {partyName, firmName, GST, mobile, addr, area, status} = parties[p];
+      partyList.push(
+        <Table.Row>
+          <Table.Cell width={1}><a onClick={() => this.togglePartyStatus({partyId: p, status})} >{status ? '✅' : '❌'}</a></Table.Cell>
+          <Table.Cell>{partyName}</Table.Cell>
+          <Table.Cell>{firmName}</Table.Cell>
+          <Table.Cell>{mobile}</Table.Cell>
+          <Table.Cell>{area}</Table.Cell>
+          <Table.Cell>{GST}</Table.Cell>
+          <Table.Cell>{addr}</Table.Cell>
+        </Table.Row>
+      )
+    });
+
+    return (
+      <div>
+        <Modal onClose={this.closeModal} open={this.state.showPartyModal}
+          trigger={<div className='pl-4'><Button color='teal'
+          onClick={() => this.setState({showPartyModal: true})}>Add Party</Button></div>}
+          centered={true}>
+          <Modal.Content>
+            <AddParty
+              userId={this.props.params.userId}
+              closeModal={this.closePartyModal}
+              authId={this.state.userData.authId}
+            />
+          </Modal.Content>
+        </Modal>
+        <Table striped columns={7}>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell width={1}></Table.HeaderCell>
+            <Table.HeaderCell>Party</Table.HeaderCell>
+            <Table.HeaderCell>Firm</Table.HeaderCell>
+            <Table.HeaderCell>mobile</Table.HeaderCell>
+            <Table.HeaderCell>area</Table.HeaderCell>
+            <Table.HeaderCell>GST</Table.HeaderCell>
+            <Table.HeaderCell>addr</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        {partyList}
+      </Table>
+      </div>
+
+    )
+
   }
 
   render() {
@@ -468,49 +548,35 @@ class User extends Component {
 
     const userStatusColor = statusColorMap[userStatus];
     const userId = this.props.params.userId;
-    const userActivityActionIcon  = active ? <h2><FaUserDisable onClick={ this.activateUserStatus.bind(this, false) }/> </h2>:  <h2><FaUserEnable onClick={this.activateUserStatus.bind(this, true)}/></h2>;
-    const userActivityActionText = active ? 'Click Here to ↓ Disable User' : 'Click Here to ↓ Enable User';
+    const userActivityActionIcon  = active ? <span><FaUserDisable onClick={ this.activateUserStatus.bind(this, false) }/> </span>:  <h2><FaUserEnable onClick={this.activateUserStatus.bind(this, true)}/></h2>;
+
     return (
       <div>
-        <div className="userPage">
-          <div className="user">
-              <ul style={{backgroundColor: userStatusColor, textAlign: 'center', listStyle: 'none' }}>
+        <div className="lg:max-w-6xl mx-auto ">
+          <div className="shadow-lg rounded-lg overflow-hidden my-4 relative">
+              <ul style={{backgroundColor: userStatusColor, textAlign: 'center', listStyle: 'none', padding: '16px 0' }}>
                 <li><h1>{ name }</h1></li>
                 <li><h2>{ userId }</h2></li>
+                <li><h2>{ mobile }</h2></li>
+
                 <li>User is <strong>{ userStatus }</strong></li>
-                <li>{ userActivityActionText } { userActivityActionIcon }</li>
+                <div className='text-center bg-red-100 mx-auto p-6 rounded-full shadow-lg absolute top-2 right-2'>{ userActivityActionIcon }</div>
               </ul>
           </div>
-          <div className="outlets">
-            <div className="sectionHeader" onClick={() => this.setState({renderShopsTable:!this.state.renderShopsTable})}>
-              <h3>SHOPS</h3>
+          <div className="my-12 rounded-t-lg shadow-lg">
+            <div className="p-4 rounded-t-lg overflow-hidden bg-green-600 mb-8">
+              <h3>PARTIES</h3>
             </div>
-            <div className="sectionBody">
-            {this.state.renderShopsTable ? this.renderShops() : null}
-            </div>
-          </div>
-          <div className="outlets">
-            <div className="sectionHeader" onClick={() => this.setState({renderOrdersTable:!this.state.renderOrdersTable})}>
-              <h3>ORDERS</h3>
-            </div>
-            <div className="sectionBody">
-            {this.state.renderOrdersTable ? this.renderOrders() : null}
+            <div className="pb-8 pt-2">
+            {this.renderParties()}
             </div>
           </div>
-          <div className="outlets">
-            <div className="sectionHeader" onClick={() => this.setState({renderAreasTable:!this.state.renderAreasTable})}>
+          <div className="my-12 rounded-t-lg shadow-lg">
+            <div className="p-4 rounded-t-lg overflow-hidden bg-green-600 mb-8">
               <h3>ALLOWED AREAS</h3>
             </div>
-            <div className="sectionBody">
-            {this.state.renderAreasTable ? this.renderAreas() : null}
-            </div>
-          </div>
-          <div className="outlets">
-            <div className="sectionHeader" onClick={() => this.setState({renderConstituenciesTable:!this.state.renderConstituenciesTable})}>
-              <h3>CONSTITUENCIES</h3>
-            </div>
-            <div className="sectionBody">
-            {this.state.renderConstituenciesTable ? this.renderConstituencies() : null}
+            <div className="pb-8 pt-2">
+              {this.renderAreas()}
             </div>
           </div>
         </div>

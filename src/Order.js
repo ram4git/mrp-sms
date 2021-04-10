@@ -339,7 +339,7 @@ class Order extends Component {
 
       <div className='pb-8'>
         <div className="order">
-          <div className="detail">
+          <div className="detail mx-auto max-w-6xl">
             <div className="actionIcons">
               <Button.Group>
                 <Button labelPosition='left' icon='left chevron' content='Previous Order' />

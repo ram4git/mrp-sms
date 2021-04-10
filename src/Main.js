@@ -24,6 +24,7 @@ import CreateUser from './CreateUser';
 import Purge from './Purge';
 import DailyPrices from './DailyPrices';
 import DailyPrice from './DailyPrice';
+import ProcurementUpdates from './ProcurementUpdates';
 
 class Main extends Component {
   render() {
@@ -41,12 +42,12 @@ class Main extends Component {
             <Route path="/order/:orderId" component={ Order }/>
             <Route path="/order/updates/:orderId" component={ OrderUpdate }/>
             <Route path="/areas/:areaId" component={ AreaDetails }/>
-            <Route path="/users" component={ Users }/>
-            <Route path="/user/:userId" component={ User }/>
+            <Route path="/agents" component={ Users }/>
+            <Route path="/agent/:userId" component={ User }/>
             <Route path="/input" component={ Input }/>
             <Route path="/new-user" component={ CreateUser } />
             <Route path="/purge" component={ Purge } />
-            <Route path="/dailyprice" component={ DailyPrice } />
+            <Route path="/procurements" component={ ProcurementUpdates } />
             <Route path="/dailyPrices" component={ DailyPrices } />
           </Route>
         </Route>

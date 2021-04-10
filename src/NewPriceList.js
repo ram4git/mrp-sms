@@ -80,7 +80,7 @@ class NewPriceList extends Component {
       </Menu>
       <div className="table">
         <p><span style={ {color: '#ecf2f9' } }>██ </span> is agent price. <span style={ {color: '#fff7e6' } }>██ </span> is outlet price </p>
-        <p> 32</p>
+        <p>Double click on the price to change</p>
         { this.renderPriceListButtons() }
         { this.renderPriceListTable() }
         { this.renderPriceListButtons() }

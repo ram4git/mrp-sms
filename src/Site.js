@@ -41,19 +41,20 @@ class Site extends Component {
     if (access_token) {
         return (
           <div className="flex-grow flex justify-center flex-row items-center">
-
-            <div className="menu-item text-center">
-              <Link className='px-2 flex flex-col justify-center items-center' to="/dailyprices"><FaTags className='m-0 p-0 text-2xl' /><p className=''>DailyPrices</p></Link>
-            </div>
-            <div className="menu-item text-center">
-              <Link className='px-2 flex flex-col justify-center items-center' to="/dailyprice"><FaTags className='m-0 p-0 text-2xl' /><p className=''>DailyPrices History</p></Link>
-            </div>
-            <div className="menu-item text-center">
-              <Link className='px-2 flex flex-col justify-center items-center' to="/users"><FaUsers className='m-0 p-0 text-2xl' /><p className=''>Users</p></Link>
-            </div>
             <div className="menu-item text-center">
               <Link className='px-2 flex flex-col justify-center items-center' to="/orders"><FaOrderList className='m-0 p-0 text-2xl' /><p className=''>Orders</p></Link>
             </div>
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/procurements"><FaTags className='m-0 p-0 text-2xl' /><p className=''>Procurements
+              </p></Link>
+            </div>
+            {/* <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/dailyprice"><FaTags className='m-0 p-0 text-2xl' /><p className=''>DailyPrices History</p></Link>
+            </div> */}
+            <div className="menu-item text-center">
+              <Link className='px-2 flex flex-col justify-center items-center' to="/agents"><FaUsers className='m-0 p-0 text-2xl' /><p className=''>Agents</p></Link>
+            </div>
+
             <div className="menu-item text-center">
               <Link className='px-2 flex flex-col justify-center items-center' to="/console"><FaSettings className='m-0 p-0 text-2xl' /><p className=''>Settings</p></Link>
             </div>

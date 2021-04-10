@@ -22,7 +22,7 @@ class AddAgent extends Component {
       name: '',
       mobile: '',
       mobile_alt: '',
-      area: ''
+      areas: ''
     };
 
     this.state = {
@@ -42,7 +42,7 @@ class AddAgent extends Component {
       'name': this.state.name,
       'mobile': this.state.mobile,
       'mobile_alt': this.state.mobile_alt,
-      'area': this.state.area,
+      'areas': this.state.areas,
       'outlets': []
     };
 
@@ -134,13 +134,13 @@ class AddAgent extends Component {
             </span>
           </li>
           <li>
-            <label>Area</label>
+            <label>Areas</label>
             <span>
               <input type="text"
-                name="area"
+                name="areas"
                 placeholder="ex: vizag, tirupati"
-                value={ this.state.area }
-                onChange={ this.updateInputValue.bind(this, 'area') }
+                value={ this.state.areas }
+                onChange={ this.updateInputValue.bind(this, 'areas') }
                 required>
               </input>
             </span>
