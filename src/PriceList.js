@@ -145,15 +145,15 @@ class PriceList extends Component {
             priority: product.priority
           });
 
-          productTypeCols.push({
-            key: productOutletKey,
-            name: outletName,
-            editable: true,
-            width: columnWidth,
-            resizable: true,
-            className: 'outlet',
-            priority: product.priority
-          });
+          // productTypeCols.push({
+          //   key: productOutletKey,
+          //   name: outletName,
+          //   editable: true,
+          //   width: columnWidth,
+          //   resizable: true,
+          //   className: 'outlet',
+          //   priority: product.priority
+          // });
 
         });
         cols[productType] = productTypeCols;
