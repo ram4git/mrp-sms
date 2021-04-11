@@ -152,7 +152,7 @@ class CreateParty extends Component {
 
     
     const update = {};
-    const partyRef = `p/${this.props.authId}/parties/${mobile}`;
+    const partyRef = `p/${this.props.authId}/parties/${GST}`;
     update[partyRef] = partyData;
 
     firebase.database().ref().update(update).then(() => {
