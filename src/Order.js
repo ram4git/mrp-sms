@@ -27,7 +27,7 @@ const statusColorMap = {
   'dispatched': '#9fdf9f',
   'cancelled': '#ffb399',
   'pending': 'darkorange',
-  'approve': 'lightgreen',
+  'approved': 'lightgreen',
   'pending_approval': 'orange',
   paid: 'darkgreen'
 }
@@ -47,6 +47,7 @@ class Order extends Component {
         text: 0
       }
     };
+    this.approveOrder = this.approveOrder.bind(this);
   }
 
   show = (dimmer) => () => this.setState({ dimmer, open: true })
@@ -304,6 +305,15 @@ class Order extends Component {
     )
   }
 
+
+  approveOrder(){
+
+    const orderPath = `o/${this.props.params.orderId}/status`;
+    const orderRef = firebase.database().ref().child(orderPath);
+    orderRef.set('approved').then(() => console.log('Status updated'));
+
+  }
+
   render() {
 
     if(this.state.orderData.loading === LOADING) {
@@ -334,7 +344,7 @@ class Order extends Component {
 
     const {area, partyName , partyDetails} = this.state.orderData;
 
-
+    console.log('SATUS=', status);
     return (
 
       <div className='pb-8'>
@@ -356,6 +366,14 @@ class Order extends Component {
               <li className='py-1'>party:<strong>{partyName}</strong></li>
               <li className='py-1'><p>{partyDetails}</p></li>
               <li className='py-4'>Order is <strong className='text-3xl'>{status}</strong></li>
+              {
+                status === 'pending_approval' ?
+                <li className='py-4'>
+                  <Button primary labelPosition='left' icon='left thumbs up outline' content='Approve Order' onClick={this.approveOrder} />
+                </li>
+                : null
+              }
+
             </ul>
             { this.renderCart(this.state.orderData.cart) }
             { this.renderSpecialMsg(this.state.orderData.orderMsg) }

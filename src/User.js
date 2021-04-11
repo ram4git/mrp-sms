@@ -154,7 +154,7 @@ class User extends Component {
 
 
   activateUserStatus(enable) {
-    const userStatusPath = `users/${this.props.params.userId}/active`;
+    const userStatusPath = `agents/${this.props.params.userId}/active`;
     const userStatusRef = firebase.database().ref().child(userStatusPath);
     userStatusRef.set(enable, error => {
       if(error) {
