@@ -80,7 +80,7 @@ class Products extends Component {
         </Collapse>
 
         <Collapse>
-          <Panel header="Broken" key="broken">
+          <Panel header="Rice/Broken" key="broken">
             <Collapse>
               { this.getProducts('broken') }
             </Collapse>

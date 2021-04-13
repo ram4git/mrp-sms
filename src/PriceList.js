@@ -382,7 +382,7 @@ class PriceList extends Component {
       <Menu >
         <Menu.Item name='wheat' active={this.state.productType === 'rice'} onClick={() => { this.changeProductType('rice'); }} />
         <Menu.Item name='paddy' active={this.state.productType === 'ravva'} onClick={() => { this.changeProductType('ravva'); }} />
-        <Menu.Item name='broken' active={this.state.productType === 'broken'} onClick={() => { this.changeProductType('broken'); }} />
+        <Menu.Item name='rice/broken' active={this.state.productType === 'broken'} onClick={() => { this.changeProductType('broken'); }} />
       </Menu>
 
 

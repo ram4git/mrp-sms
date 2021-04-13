@@ -80,7 +80,7 @@ class Areas extends Component {
 
   getConfirmModal() {
     const { areaKey, areaId } = this.state;
-    return <Modal show={this.state.showConfirmModal} onHide={this.closeConfirmModal.bind(this)} closeIcon>
+    return <Modal show={true} onHide={this.closeConfirmModal.bind(this)} closeIcon>
       <Modal.Header closeButton>
         <Modal.Title>Delete { areaId } area?</Modal.Title>
       </Modal.Header>

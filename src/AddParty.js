@@ -150,7 +150,6 @@ class CreateParty extends Component {
         partyName, firmName, area, mobile, GST, addr
     };
 
-    
     const update = {};
     const partyRef = `p/${this.props.authId}/parties/${GST}`;
     update[partyRef] = partyData;
