@@ -361,7 +361,7 @@ class Order extends Component {
             </div>
             <ul className="header rounded-lg shadow-lg" style={{backgroundColor: orderStatusColor, textAlign: 'center', listStyle: 'none' }}>
               <li className='py-1'><h2 className='py-2'>{orderId}</h2></li>
-              <li className='py-1'><strong>{agent}</strong> placed a purchase order on <strong>{ timeString}</strong></li>
+              <li className='py-1'><strong>{agent.name|| agent}</strong> placed a purchase order on <strong>{ timeString}</strong></li>
               <li className='py-1'>area:<strong>{camelCaseToRegularCase(area)}</strong></li>
               <li className='py-1'>party:<strong>{partyName}</strong></li>
               <li className='py-1'><p>{partyDetails}</p></li>

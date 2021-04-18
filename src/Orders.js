@@ -108,7 +108,7 @@ class Orders extends Component {
       },
       {
         key: 'agent',
-        name: 'Agent NAME',
+        name: 'Agent ',
         resizable: true,
         sortable: true,
         filterable:true,
@@ -198,10 +198,12 @@ class Orders extends Component {
       let orders = snapshot.val();
       for(let orderId in orders){
         const order = orders[orderId];
+        const agentName = order.agent.name || order.agent;
+        delete order.agent;
         let dateTime = new Date(Number(order.time));
         let formattedDate = dateTime.toLocaleDateString('en-IN') + ' ' + dateTime.toLocaleTimeString('en-IN');
 
-        tablerows.unshift({...order})
+        tablerows.unshift({...order, agent: agentName})
       }
       that.setState({
          rows: tablerows.sort((a,b) => {return (a.priority < b.priority) ? 1 : ((b.priority < a.priority) ? -1 : 0);} )
