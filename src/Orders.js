@@ -26,7 +26,10 @@ class StatusColorFormatter extends Component {
       'approved': 'lightgreen',
       'pending_approval': 'orange',
       paid: 'darkgreen',
-      printed: 'blue'
+      printed: 'blue',
+      rejected: '#e74c3c',
+      partial_paid: '#1abc9c',
+      paid: '#16a085'
     }
   }
   render() {
@@ -116,7 +119,7 @@ class Orders extends Component {
         minWidth: 200
       },
       {
-        key: 'partyName',
+        key: 'partyDetails',
         name: 'Party',
         resizable: true,
         sortable: true,
@@ -194,7 +197,7 @@ class Orders extends Component {
 
     const that = this;
     const ordersRef = this.data.dbRef.child('o');
-    ordersRef.orderByChild('priority').limitToFirst(100).on('value', snapshot => {
+    ordersRef.orderByChild('priority').limitToFirst(500).on('value', snapshot => {
       let tablerows = [];
       let orders = snapshot.val();
       for(let orderId in orders){

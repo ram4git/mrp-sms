@@ -29,7 +29,12 @@ const statusColorMap = {
   'pending': 'darkorange',
   'approved': 'lightgreen',
   'pending_approval': 'orange',
-  paid: 'darkgreen'
+  paid: 'darkgreen',
+  paid: 'darkgreen',
+  printed: 'blue',
+  rejected: '#e74c3c',
+  partial_paid: '#1abc9c',
+  paid: '#16a085'
 }
 
 class Order extends Component {
