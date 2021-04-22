@@ -25,7 +25,8 @@ class StatusColorFormatter extends Component {
       'pending': 'darkorange',
       'approved': 'lightgreen',
       'pending_approval': 'orange',
-      paid: 'darkgreen'
+      paid: 'darkgreen',
+      printed: 'blue'
     }
   }
   render() {
