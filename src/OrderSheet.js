@@ -180,7 +180,7 @@ class OrderSheet extends Component {
           <table className="summary">
             <tr className='p-2 my-2'>
               <td className="w-1/4 text-blue-700 py-1"><h3>Agent<span>:</span></h3></td>
-              <td className="text-align-start capitalize">{agent}</td>
+              <td className="text-align-start capitalize">{agent.name || agent}</td>
             </tr>
             <tr className='p-2 my-2'>
               <td className="w-1/4 text-blue-700 py-1"><h3>PartyName<span>:</span></h3></td>
@@ -386,11 +386,13 @@ class OrderSheet extends Component {
     const m = moment(ts, 'YYYY-MM-DD - HH:mm:ssA');
     const orderTimeString = m.format('DD/MMM/YY - HH:mm:ssA');
     const currentTimeString = moment().format('DD/MMM/YY - HH:mm:ssA')
-    const delayInHours = m.toNow(true)
+    const delayInHours = m.toNow(true);
+
+    debugger;
 
     return (
       <div className="orderHeader">
-        <h3>{ agent }<span>{`'s Order`}</span></h3>
+        <h3>{ agent.name ? agent.name : agent }<span>{`'s Order`}</span></h3>
         <h3>{ orderId }</h3>
         <table>
           <tr>
