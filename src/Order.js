@@ -382,7 +382,7 @@ class Order extends Component {
             </ul>
             { this.renderCart(this.state.orderData.cart) }
             { this.renderSpecialMsg(this.state.orderData.orderMsg) }
-            {this.renderUpdatePayment()}
+            {/* {this.renderUpdatePayment()} */}
 
             {this.renderUpdateSection()}
           </div>
