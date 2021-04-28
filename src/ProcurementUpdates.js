@@ -121,7 +121,7 @@ class AddAgent extends Component {
             <div className='mx-auto max-w-6xl detail'>
                 <ul className="header rounded-lg shadow-lg my-8 overflow-hidden py-8" style={{backgroundColor: orderStatusColor, textAlign: 'center', listStyle: 'none' }}>
                     <li className='py-1'><h2 className='py-2'>{id}</h2></li>
-                    <li className='py-1'><strong>{agent}</strong> placed a purchase order on <strong>{ timeString}</strong></li>
+                    <li className='py-1'><strong>{agent.name || agent}</strong> placed a purchase order on <strong>{ timeString}</strong></li>
                     <li className='py-1'>area:<strong>{camelCaseToRegularCase(area)}</strong></li>
                     <li className='py-1'>party:<strong>{partyName}</strong></li>
                     <li className='py-1'><p>{partyDetails}</p></li>
