@@ -166,7 +166,7 @@ class AddAgent extends Component {
   
   
       Object.keys(payments).forEach((id, index) => {
-        const {name, nickname, updateMsg, amount, timestamp, ePrice, weightInTons} = payments[id];
+        const {name, nickname, updateMsg, amount, timestamp, ePrice, weightInTons, truckNo} = payments[id];
         const m = moment(timestamp, 'YYYY-MM-DD hh:mm:ssA');
         totalPayments = totalPayments + parseFloat(amount);
         totalWeightInTons = totalWeightInTons + parseFloat(weightInTons || '0')
@@ -175,6 +175,7 @@ class AddAgent extends Component {
             <Table.Cell>{index+1}</Table.Cell>
             <Table.Cell><p>{nickname||name} on <span className='font-bold text-blue-800'>{m.format('DD/MMM/YY HH:mm')}</span><span className='text-gray-400'>{' '}( {m.fromNow()})</span></p></Table.Cell>
             <Table.Cell>{updateMsg}</Table.Cell>
+            <Table.Cell>{truckNo}</Table.Cell>
             <Table.Cell textAlign='right'>{weightInTons}</Table.Cell>
             <Table.Cell textAlign='right'>{ePrice}</Table.Cell>
             <Table.Cell textAlign='right' className='font-bold text-xl'>{amount.toLocaleString()}</Table.Cell>
@@ -189,6 +190,7 @@ class AddAgent extends Component {
             <Table.HeaderCell>#</Table.HeaderCell>
             <Table.HeaderCell>Updated</Table.HeaderCell>
             <Table.HeaderCell>Notes</Table.HeaderCell>
+            <Table.HeaderCell>Truck</Table.HeaderCell>
             <Table.HeaderCell>Weight in tons</Table.HeaderCell>
             <Table.HeaderCell>Price/Quintal</Table.HeaderCell>
             <Table.HeaderCell>Amount</Table.HeaderCell>
