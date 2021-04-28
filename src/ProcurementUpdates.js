@@ -12,7 +12,7 @@ class AddAgent extends Component {
         super();
         this.state = {
             isLoading: false,
-            orderId: '210416N948',
+            orderId: '',
             orderData: null,
             error: ''
         }
@@ -103,23 +103,23 @@ class AddAgent extends Component {
       }
 
     renderUpdateForm() {
-      const { weightInTons, shortageInTons, ePrice} = this.state;
+      const { weightInTons, shortageInTons, ePrice, purchaseNo, truckNo, paymentAmout} = this.state;
         const actualWeightInQuintals = weightInTons*(1000-shortageInTons)/100;
         return (
             <Form onSubmit={this.handlePaymentUpdate} className='w-full py-8 px-8 my-12 shadow-lg rounded-lg bg-gradient-to-br from-blue-100 to-blue-300'>
                 <Form.Group widths='equal'>
-                    <Form.Input required={true} fluid label='Purchase No' placeholder='Purchase number' onChange={e => this.setState({purchaseNo: e.target.value})} />
-                    <Form.Input required={true} fluid label='Truck No' placeholder='Truck number' onChange={e => this.setState({truckNo: e.target.value})}/>
+                    <Form.Input value={purchaseNo} required={true} fluid label='Purchase No' placeholder='Purchase number' onChange={e => this.setState({purchaseNo: e.target.value})} />
+                    <Form.Input value={truckNo} required={true} fluid label='Truck No' placeholder='Truck number' onChange={e => this.setState({truckNo: e.target.value})}/>
                 </Form.Group>
                 <Form.Group widths='equal'>
-                    <Form.Input type='number' required={true} fluid label='Weight in tons' placeholder='weight in tons' onChange={e => this.setState({weightInTons: parseFloat(e.target.value||'0')})}/>
-                    <Form.Input type='number' required={true} fluid label='Bag Weight deduction in KGs per ton' placeholder='bag weight in kgs' onChange={e => this.setState({shortageInTons: parseFloat(e.target.value|| '0')})} />
+                    <Form.Input value={weightInTons} type='number' required={true} fluid label='Weight in tons' placeholder='weight in tons' onChange={e => this.setState({weightInTons: parseFloat(e.target.value||'0')})}/>
+                    <Form.Input value={shortageInTons} type='number' required={true} fluid label='Bag Weight deduction in KGs per ton' placeholder='bag weight in kgs' onChange={e => this.setState({shortageInTons: parseFloat(e.target.value|| '0')})} />
                 </Form.Group>
 
                 <Form.Group widths='equal'>
-                    <Form.Input type='number' required={true} fluid label='Price' placeholder='Price' onChange={e => this.setState({ePrice: e.target.value})}/>
+                    <Form.Input value={ePrice} type='number' required={true} fluid label='Price' placeholder='Price' onChange={e => this.setState({ePrice: e.target.value})}/>
                     <Form.Input type='number' disabled={true} required={true} fluid label='Actual Value' value={actualWeightInQuintals*ePrice} />
-                    <Form.Input type='number' required={true} fluid label='Advance Payment' placeholder='Advane Payment amount' onChange={e => this.setState({paymentAmout: e.target.value})}/>
+                    <Form.Input value={paymentAmout} type='number' required={true} fluid label='Advance Payment' placeholder='Advane Payment amount' onChange={e => this.setState({paymentAmout: e.target.value})}/>
                 </Form.Group>
                 { actualWeightInQuintals && ePrice  ? <span>{`${actualWeightInQuintals} quintals @${ePrice} per quintal`}</span> : null}
 
