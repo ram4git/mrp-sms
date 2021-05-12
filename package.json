@@ -939,7 +939,7 @@
     "toposort": "^1.0.6",
     "tough-cookie": "^2.3.4",
     "tr46": "^0.0.3",
-    "trim": "^0.0.1",
+    "trim": "^0.0.3",
     "trim-right": "^1.0.1",
     "tty-browserify": "^0.0.0",
     "tunnel-agent": "^0.6.0",
