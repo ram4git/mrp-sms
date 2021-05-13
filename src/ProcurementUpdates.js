@@ -112,14 +112,14 @@ class AddAgent extends Component {
                     <Form.Input value={truckNo} required={true} fluid label='Truck No' placeholder='Truck number' onChange={e => this.setState({truckNo: e.target.value})}/>
                 </Form.Group>
                 <Form.Group widths='equal'>
-                    <Form.Input value={weightInTons} type='number' required={true} fluid label='Weight in tons' placeholder='weight in tons' onChange={e => this.setState({weightInTons: parseFloat(e.target.value||'0')})}/>
-                    <Form.Input value={shortageInTons} type='number' required={true} fluid label='Bag Weight deduction in KGs per ton' placeholder='bag weight in kgs' onChange={e => this.setState({shortageInTons: parseFloat(e.target.value|| '0')})} />
+                    <Form.Input value={weightInTons} type='number' step='0.01' required={true} fluid label='Weight in tons' placeholder='weight in tons' onChange={e => this.setState({weightInTons: parseFloat(e.target.value||'0')})}/>
+                    <Form.Input value={shortageInTons} type='number' step='0.01' required={true} fluid label='Bag Weight deduction in KGs per ton' placeholder='bag weight in kgs' onChange={e => this.setState({shortageInTons: parseFloat(e.target.value|| '0')})} />
                 </Form.Group>
 
                 <Form.Group widths='equal'>
-                    <Form.Input value={ePrice} type='number' required={true} fluid label='Price' placeholder='Price' onChange={e => this.setState({ePrice: e.target.value})}/>
-                    <Form.Input type='number' disabled={true} required={true} fluid label='Actual Value' value={actualWeightInQuintals*ePrice} />
-                    <Form.Input value={paymentAmout} type='number' required={true} fluid label='Advance Payment' placeholder='Advane Payment amount' onChange={e => this.setState({paymentAmout: e.target.value})}/>
+                    <Form.Input value={ePrice} type='number' step='0.01' required={true} fluid label='Price' placeholder='Price' onChange={e => this.setState({ePrice: e.target.value})}/>
+                    <Form.Input type='number' step='0.01' disabled={true} required={true} fluid label='Actual Value' value={actualWeightInQuintals*ePrice} />
+                    <Form.Input value={paymentAmout} type='number' step='0.01' required={true} fluid label='Advance Payment' placeholder='Advane Payment amount' onChange={e => this.setState({paymentAmout: e.target.value})}/>
                 </Form.Group>
                 { actualWeightInQuintals && ePrice  ? <span>{`${actualWeightInQuintals} quintals @${ePrice} per quintal`}</span> : null}
 
