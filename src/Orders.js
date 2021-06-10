@@ -197,7 +197,7 @@ class Orders extends Component {
 
     const that = this;
     const ordersRef = this.data.dbRef.child('o');
-    ordersRef.orderByChild('priority').limitToFirst(500).on('value', snapshot => {
+    ordersRef.orderByChild('priority').limitToFirst(1000).on('value', snapshot => {
       let tablerows = [];
       let orders = snapshot.val();
       for(let orderId in orders){
@@ -263,6 +263,9 @@ class Orders extends Component {
     return (
       <div tabTitle="Orders" className="py-8 mx-8 mx-auto">
         <h1 className='text-3xl text-green-600 text-center mx-auto'>Purchase Orders</h1>
+        <div className='w-full py-2 px-4'>
+          <a href='/purge'><span className='text-xl font-semibold text-red-400'>Archive Old Orders</span></a>
+        </div>
         <ReactDataGrid
           columns={this._columns}
           rowGetter={this.rowGetter.bind(this)}

@@ -18,27 +18,29 @@ class Purge extends Component {
   render() {
     return  (
       <div className='purge'>
-        <Button primary onClick={ this.onClick.bind(this) }>CLICK TO PURGE OLDER ORDERS</Button>
+        <Button primary onClick={ this.onClick.bind(this) }>CLICK TO ARCHIVE OLDER ORDERS</Button>
         <Header center>{this.state.msg}</Header>
       </div>
     );
   }
 
   onClick(e) {
-    const ordersRef = firebase.database().ref().child('orders');
+    const ordersRef = firebase.database().ref().child('o');
     let count = 0;
     ordersRef.once('value', snapshot => {
       const orders = snapshot.val();
       Object.keys(orders).forEach( orderId => {
+        debugger;
         const order = orders[orderId];
-        const orderTime = order.time;
-        const orderDate = moment(orderTime).format('DD-MM-YYYY');
+        const orderTime = order.ts;
+        const orderDate = moment(orderTime, 'YYYY-MM-DD HH:mm:ssA').format('DD-MM-YYYY');
         //console.log(`${count++} | ${orderDate} | ${orderId}`);
-        if (moment(orderTime).isBefore(moment().subtract(1, 'months'))) {
-          //console.log(orderId + ' is older than a month and is on ' + orderDate);
+        if (moment(orderTime, 'YYYY-MM-DD HH:mm:ssA').isBefore(moment().subtract(1, 'months'))) {
+
+          console.log(orderId + ' is older than a month and is on ' + orderDate);
           const updates = {};
-          updates[ `/oldOrders/${orderDate}/${orderId}`] = order;
-          updates[`/orders/${orderId}`] = null;
+          updates[ `/archive/o/${orderDate}/${orderId}`] = order;
+          updates[`/o/${orderId}`] = null;
           firebase.database().ref().update(updates)
           .catch(e => {
             console.log(`Unable to archive ${orderId}`, e);
