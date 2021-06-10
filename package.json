@@ -646,7 +646,7 @@
     "normalize-package-data": "^2.3.8",
     "normalize-path": "^2.1.1",
     "normalize-range": "^0.1.2",
-    "normalize-url": "^1.9.1",
+    "normalize-url": "^4.5.1",
     "npm": "^4.6.1",
     "npm-cache-filename": "^1.0.2",
     "npm-install-checks": "^3.0.0",
